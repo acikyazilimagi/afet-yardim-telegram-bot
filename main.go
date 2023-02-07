@@ -104,6 +104,26 @@ func extractCityName(s []byte) []byte {
 	return citRegex.Find(s)
 }
 
+func sendDataToBackend() {
+	req, err := http.NewRequest(http.MethodPost, "", nil)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "could not prepare request data to backend: %s", err.Error())
+		return
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "could not send data to backend: %s", err.Error())
+		return
+	}
+
+	//TODO backend status control
+	if resp.StatusCode != http.StatusOK {
+		fmt.Fprintf(os.Stderr, "an error on backend response: %s", err.Error())
+		return
+	}
+}
+
 func main() {
 	citRegex, regexErr = regexp.Compile(pattern)
 	if regexErr != nil {
@@ -130,17 +150,19 @@ func main() {
 	updates := bot.GetUpdatesChan(u)
 
 	for update := range updates {
-		if update.ChannelPost != nil && update.ChannelPost.Text != "" { // If we got a message
-			log.Printf("telegram mesaj: [%s]", update.ChannelPost.Text)
-			addressResponse := sendExtractAddressResponse(update.ChannelPost.Text)
+		if update.Message != nil {
+			addressResponse := sendExtractAddressResponse(update.Message.Text)
 			if addressResponse == nil {
 				addressResponse = &AddressDetail{}
 			}
 
 			if addressResponse.City == "" {
-				cityName := extractCityName([]byte(update.ChannelPost.Text))
+				cityName := extractCityName([]byte(update.Message.Text))
 				addressResponse.City = string(cityName)
 			}
+
+			//TODO waiting contract from backend
+			//sendDataToBackend()
 		}
 	}
 }
