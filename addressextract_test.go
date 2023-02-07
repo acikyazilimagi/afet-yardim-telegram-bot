@@ -40,7 +40,7 @@ func TestExtractDistrict(t *testing.T) {
 }
 
 func TestExtractDistrictUpperCase(t *testing.T) {
-	address := "Hayrullah Mah. Malik Ejder Cad. 33023 Sokak Hilal Apt. 4. Ankara Kat Onikişubat - Kahramanmaraş (Ortahal civarı, Kültürpark Karşısı, 46Ambar Ayakkabının olduğu bina"
+	address := "Hayrullah Mah. Malik Ejder Cad. 33023 Sokak Hilal Apt. 4. Ankara Kat ONİKİŞUBAT - Kahramanmaraş (Ortahal civarı, Kültürpark Karşısı, 46Ambar Ayakkabının olduğu bina"
 	city := MARAS
 
 	district := ExtractDistrict(City(city), address)
