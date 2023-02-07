@@ -28,7 +28,7 @@ type AddressDetail struct {
 	NameSurname   string `json:"name_surname"`
 	Address       string `json:"address"`
 	City          string `json:"city"`
-	Distinct      string `json:"distinct"`
+	District      string `json:"distinct"`
 	Tel           string `json:"tel"`
 }
 
@@ -125,11 +125,6 @@ func sendDataToBackend() {
 }
 
 func main() {
-	citRegex, regexErr = regexp.Compile(pattern)
-	if regexErr != nil {
-		fmt.Fprintf(os.Stderr, "city regex compile error :%s", citRegex.String())
-	}
-
 	botKey := os.Getenv("BOT_KEY")
 	if botKey == "" {
 		panic("BOT_KEY is not found")
@@ -156,9 +151,15 @@ func main() {
 				addressResponse = &AddressDetail{}
 			}
 
+			city := UNKNOWN
 			if addressResponse.City == "" {
-				cityName := extractCityName([]byte(update.Message.Text))
-				addressResponse.City = string(cityName)
+				city = string(ExtractCity(update.Message.Text))
+				addressResponse.City = city
+			}
+
+			if addressResponse.District == "" {
+				district := ExtractDistrict(City(city), update.Message.Text)
+				addressResponse.District = district
 			}
 
 			//TODO waiting contract from backend
