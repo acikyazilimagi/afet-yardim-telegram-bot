@@ -2,6 +2,10 @@ package main
 
 import (
 	"regexp"
+	"strings"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type City string
@@ -40,7 +44,7 @@ var (
 	hatayPattern, _      = regexp.Compile("(?i)((Alt[ıIiİ]n[oOöÖ]z[uUüÜ])|(Arsuz)|(Belen‎)|(D[oOöÖ]rtyol‎)|(Erzin‎)|(Hassa‎)|([Iıİi]skenderun‎)|(K[ıIiİ]r[ıIiİ]khan)|(Kumlu)|(Payas)|(Reyhanl[ıIiİ]‎)|(Samanda[gGğĞ]‎)|(Yaylada[gGğĞ][ıIiİ]‎)|(Antakya‎)|(Defne))")
 	kilisPattern, _      = regexp.Compile("(?i)((Elbeyli)|(Musabeyli)|(Polateli))")
 	malatyaPattern, _    = regexp.Compile("(?i)((Ak[cCçÇ]ada[gGğĞ])|(Arapgir)|(Arguvan)|(Darende)|(Do[gGğĞ]an[sSşŞ]ehir)|(Do[gGğĞ]anyol)|(Hekimhan)|(Kale)|(Kuluncak)|(P[uUüÜ]t[uUüÜ]rge)|(Yaz[ıIiİ]han)|(Battalgazi)|(Ye[sSşŞ]ilyurt))")
-	marasPattern, _      = regexp.Compile("(?i)((Af[sSşŞ]in)|(And[ıIiİ]r[ıIiİ]n)|([cCçÇ]a[gGğĞ]layancerit)|(Ekin[oOöÖ]z[uUüÜ])|(Elbistan)|(G[oOöÖ]ksun)|(Nurhak)|(Pazarc[ıIiİ]k)|(T[uUüÜ]rko[gGğĞ]lu)|(Dulkadiro[gGğĞ]lu)|(Oniki[sSşŞ]ubat))")
+	marasPattern, _      = regexp.Compile("(?i)((Af[sSşŞ]in)|(And[ıIiİ]r[ıIiİ]n)|([cCçÇ]a[gGğĞ]layancerit)|(Ekin[oOöÖ]z[uUüÜ])|(Elbistan)|(G[oOöÖ]ksun)|(Nurhak)|(Pazarc[ıIiİ]k)|(T[uUüÜ]rko[gGğĞ]lu)|(Dulkadiro[gGğĞ]lu)|(On[ıIiİ]k[ıIiİ][sSşŞ]ubat))")
 	mardinPattern, _     = regexp.Compile("(?i)((Artuklu)|(Darge[cCçÇ]it)|(Derik)|(K[ıIiİ]z[ıIiİ]ltepe)|(Maz[ıIiİ]da[gGğĞ][ıIiİ])|(Midyat)|(Nusaybin)|([oOöÖ]merli)|(Savur)|(Ye[sSşŞ]illi))")
 	musPattern, _        = regexp.Compile("(?i)((Bulan[ıIiİ]k)|(Hask[oOöÖ]y)|(Korkut)|(Malazgirt)|(Varto))")
 	osmaniyePattern, _   = regexp.Compile("(?i)((Bah[cCçÇ]e)|(D[uUüÜ]zi[cCçÇ]i)|(Hasanbeyli)|(Kadirli)|(Sumbas)|(Toprakkale))")
@@ -95,7 +99,9 @@ func ExtractDistrict(city City, s string) string {
 	}
 
 	regex := districtPatterns[city]
-	return regex.FindString(s)
+	district := regex.FindString(s)
+	caser := cases.Title(language.Turkish)
+	return caser.String(strings.ToLower(district))
 }
 
 func getCityName(s string) string {
