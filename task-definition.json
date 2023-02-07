@@ -4,7 +4,12 @@
   "containerDefinitions": [
     {
       "dnsSearchDomains": null,
-      "environmentFiles": null,
+      "environmentFiles": [
+        {
+          "value": "arn:aws:s3:::d-config/xyz.env",
+          "type": "s3"
+        }
+      ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "secretOptions": null,
@@ -58,7 +63,7 @@
     "EC2",
     "FARGATE"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:eu-central-1:630179636432:task-definition/d-telegram-td:1",
+  "taskDefinitionArn": "arn:aws:ecs:eu-central-1:630179636432:task-definition/d-telegram-td:2",
   "family": "d-telegram-td",
   "requiresAttributes": [
     {
@@ -78,6 +83,12 @@
       "targetType": null,
       "value": null,
       "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "ecs.capability.env-files.s3"
     },
     {
       "targetId": null,
@@ -108,7 +119,7 @@
     "cpuArchitecture": null
   },
   "cpu": "1024",
-  "revision": 1,
+  "revision": 2,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
