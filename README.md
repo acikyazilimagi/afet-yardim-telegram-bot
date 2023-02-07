@@ -38,8 +38,8 @@ docker run -it -d -e ADDRESS_EXTRACT_API=https://mertcobanov-deprem-ocr-2.hf.spa
 
 **Docker komutunda ve .env.template dosyasındaki BOT_KEY ve ADDRESS_EXTRACT_API doldurmayı unutmayın.**
 
-### Bu botun çalıştığı kanal
+### Botu çağırmak
 
-Yardım mesajlarının iletilmesi için [Telegram Kanalı](https://t.me/+X24a5--cWXoyNjRk)
+Yardım mesajlarını iletmek için [bota mesaj atabilirsiniz](https://t.me/AfetYardimBot) 
 
 

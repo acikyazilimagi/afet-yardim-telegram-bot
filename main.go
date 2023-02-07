@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -93,6 +94,36 @@ func sendExtractAddressResponse(text string) *AddressDetail {
 	return &addressDetail
 }
 
+var (
+	pattern  = `(?i)((gaz[ıiİI]antep)|(malatya)|(batman)|(b[ıiIİ]ng[oöOÖ]l)|(elaz[Iİıi][gğ])|(kilis)|(diyarbak[ıiIİ]r)|(mardin)|(siirt)|([SsŞş][ıiIİ]rnak)|(van)|(mu[sşSŞ])|(bitlis)|(hakkari)|(adana)|(osmaniye)|(hatay)|(kahramanmara[sşSŞ])|(mara[SŞsş])|(antep))`
+	citRegex *regexp.Regexp
+	regexErr error
+)
+
+func extractCityName(s []byte) []byte {
+	return citRegex.Find(s)
+}
+
+func sendDataToBackend() {
+	req, err := http.NewRequest(http.MethodPost, "", nil)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "could not prepare request data to backend: %s", err.Error())
+		return
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "could not send data to backend: %s", err.Error())
+		return
+	}
+
+	//TODO backend status control
+	if resp.StatusCode != http.StatusOK {
+		fmt.Fprintf(os.Stderr, "an error on backend response: %s", err.Error())
+		return
+	}
+}
+
 func main() {
 	botKey := os.Getenv("BOT_KEY")
 	if botKey == "" {
@@ -130,6 +161,9 @@ func main() {
 				district := ExtractDistrict(City(city), update.Message.Text)
 				addressResponse.Distinct = district
 			}
+
+			//TODO waiting contract from backend
+			//sendDataToBackend()
 		}
 	}
 }
