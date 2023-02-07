@@ -57,12 +57,12 @@ func sendExtractAddressResponse(text string) *AddressDetail {
 	resp, err := http.DefaultClient.Do(request)
 
 	if err != nil {
-		fmt.Fprintf(os.Stdout, "error occurred while sending address request: %s \n", err.Error())
+		fmt.Fprintf(os.Stderr, "error occurred while sending address request: %s \n", err.Error())
 		return nil
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		fmt.Fprintf(os.Stdout, "status returned not okay address request: %d \n", resp.StatusCode)
+		fmt.Fprintf(os.Stderr, "status returned not okay address request: %d \n", resp.StatusCode)
 		return nil
 	}
 
@@ -70,24 +70,24 @@ func sendExtractAddressResponse(text string) *AddressDetail {
 
 	readedRespBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Fprintf(os.Stdout, "error occurred while reading response body: %s \n", err.Error())
+		fmt.Fprintf(os.Stderr, "error occurred while reading response body: %s \n", err.Error())
 		return nil
 	}
 
 	if err := json.Unmarshal(readedRespBody, &addressExtractResponse); err != nil {
-		fmt.Fprintf(os.Stdout, "error occurred while deserializing response body: %s \n", err.Error())
+		fmt.Fprintf(os.Stderr, "error occurred while deserializing response body: %s \n", err.Error())
 		return nil
 	}
 
 	serializedAddressExtractResp, err := json.Marshal(addressExtractResponse.Data)
 	if err != nil {
-		fmt.Fprintf(os.Stdout, "error occurred while serializing extract response: %s \n", err.Error())
+		fmt.Fprintf(os.Stderr, "error occurred while serializing extract response: %s \n", err.Error())
 		return nil
 	}
 
 	var addressDetail AddressDetail
 	if err := json.Unmarshal(serializedAddressExtractResp, &addressDetail); err != nil {
-		fmt.Fprintf(os.Stdout, "error occurred while deserializing addressDetail: %s \n", err.Error())
+		fmt.Fprintf(os.Stderr, "error occurred while deserializing addressDetail: %s \n", err.Error())
 		return nil
 	}
 
@@ -107,7 +107,7 @@ func extractCityName(s []byte) []byte {
 func main() {
 	citRegex, regexErr = regexp.Compile(pattern)
 	if regexErr != nil {
-		fmt.Fprintf(os.Stdout, "city regex compile error :%s", citRegex.String())
+		fmt.Fprintf(os.Stderr, "city regex compile error :%s", citRegex.String())
 	}
 
 	botKey := os.Getenv("BOT_KEY")
