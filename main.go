@@ -53,7 +53,7 @@ func sendExtractAddressResponse(text string) *AddressDetail {
 
 	serialized, _ := json.Marshal(req)
 	request, _ := http.NewRequest("POST", addressExtractApiAddress, bytes.NewReader(serialized))
-	request.Header.Add("content-type", "application/json")
+	request.Header.Add("Content-Type", "application/json")
 	resp, err := http.DefaultClient.Do(request)
 
 	if err != nil {
