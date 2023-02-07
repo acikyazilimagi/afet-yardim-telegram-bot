@@ -1,18 +1,18 @@
-#afet-yardim-telegram-bot
+# afet-yardim-telegram-bot
 
-###Bot adı ve kullanıcı adı
+### Bot adı ve kullanıcı adı
 Telegram bot username: AfetYardim_bot <br>
 
 Telegram bot name: AfetYardımBot <br>
 
-###Address extract API
+### Address extract API
 Gelen mesajdan adres çıkartmak için kullandığımız api: <br>
 https://huggingface.co/spaces/mertcobanov/deprem-ocr-2
 <br>
 
 Not: API üzerinde performans geliştirmeleri devam ediyor. <br>
 
-###MVP'de kullanılan regex
+### MVP'de kullanılan regex
 Eğer API'dan dönen veride şehir bilgisi boş ise
 şehri regex kullanarak dolduruyoruz. Şimdilik yalnızca afet bölgesindeki şehirleri ve bu şehirlerin
 yazımında oluşabilecek varyasyonları kullandık.
