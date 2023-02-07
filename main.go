@@ -49,7 +49,12 @@ func main() {
 			log.Println("shutting down...")
 			return
 
-		case update := <-updates:
+		case update, ok := <-updates:
+			if !ok {
+				log.Println("updates channel closed")
+				return
+			}
+
 			if update.Message != nil {
 				addressResponse, err := sendExtractAddressResponse(ctx, update.Message.Text)
 				if err != nil {
