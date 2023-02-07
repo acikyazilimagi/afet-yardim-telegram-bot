@@ -28,7 +28,7 @@ type AddressDetail struct {
 	NameSurname   string `json:"name_surname"`
 	Address       string `json:"address"`
 	City          string `json:"city"`
-	Distinct      string `json:"distinct"`
+	District      string `json:"distinct"`
 	Tel           string `json:"tel"`
 }
 
@@ -157,9 +157,9 @@ func main() {
 				addressResponse.City = city
 			}
 
-			if addressResponse.Distinct == "" {
+			if addressResponse.District == "" {
 				district := ExtractDistrict(City(city), update.Message.Text)
-				addressResponse.Distinct = district
+				addressResponse.District = district
 			}
 
 			//TODO waiting contract from backend
