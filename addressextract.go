@@ -2,6 +2,10 @@ package main
 
 import (
 	"regexp"
+	"strings"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type City string
@@ -95,7 +99,9 @@ func ExtractDistrict(city City, s string) string {
 	}
 
 	regex := districtPatterns[city]
-	return regex.FindString(s)
+	district := regex.FindString(s)
+	caser := cases.Title(language.Turkish)
+	return caser.String(strings.ToLower(district))
 }
 
 func getCityName(s string) string {
