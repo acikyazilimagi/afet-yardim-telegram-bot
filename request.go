@@ -13,7 +13,10 @@ import (
 
 const envAPIKey = "ADDRESS_EXTRACT_API"
 
-const requestTimeout = 1 * time.Minute
+const (
+	connectTimeout = 1 * time.Minute
+	requestTimeout = 1 * time.Minute
+)
 
 type AddressExtractRequest struct {
 	Data []string
@@ -60,7 +63,10 @@ func sendExtractAddressResponse(ctx context.Context, text string) (*AddressDetai
 		return nil, err
 	}
 
-	request, err := http.NewRequestWithContext(ctx, http.MethodPost, addressExtractApiAddress, bytes.NewReader(serialized))
+	tctx, cancel := context.WithTimeout(ctx, requestTimeout)
+	defer cancel()
+
+	request, err := http.NewRequestWithContext(tctx, http.MethodPost, addressExtractApiAddress, bytes.NewReader(serialized))
 	if err != nil {
 		err = fmt.Errorf("error occurred while creating request: %w", err)
 		return nil, err
@@ -68,7 +74,7 @@ func sendExtractAddressResponse(ctx context.Context, text string) (*AddressDetai
 	request.Header.Add("Content-Type", "application/json")
 
 	client := &http.Client{
-		Timeout: requestTimeout,
+		Timeout: connectTimeout,
 	}
 
 	resp, err := client.Do(request)
