@@ -114,21 +114,20 @@ func main() {
 	updates := bot.GetUpdatesChan(u)
 
 	for update := range updates {
-		if update.ChannelPost != nil && update.ChannelPost.Text != "" { // If we got a message
-			log.Printf("telegram mesaj: [%s]", update.ChannelPost.Text)
-			addressResponse := sendExtractAddressResponse(update.ChannelPost.Text)
+		if update.Message != nil {
+			addressResponse := sendExtractAddressResponse(update.Message.Text)
 			if addressResponse == nil {
 				addressResponse = &AddressDetail{}
 			}
 
 			city := UNKNOWN
 			if addressResponse.City == "" {
-				city = string(ExtractCity(update.ChannelPost.Text))
+				city = string(ExtractCity(update.Message.Text))
 				addressResponse.City = city
 			}
 
 			if addressResponse.Distinct == "" {
-				district := ExtractDistrict(City(city), update.ChannelPost.Text)
+				district := ExtractDistrict(City(city), update.Message.Text)
 				addressResponse.Distinct = district
 			}
 		}
