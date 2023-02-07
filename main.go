@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"regexp"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -94,22 +93,7 @@ func sendExtractAddressResponse(text string) *AddressDetail {
 	return &addressDetail
 }
 
-var (
-	pattern  = `(?i)((gaz[ıiİI]antep)|(malatya)|(batman)|(b[ıiIİ]ng[oöOÖ]l)|(elaz[Iİıi][gğ])|(kilis)|(diyarbak[ıiIİ]r)|(mardin)|(siirt)|([SsŞş][ıiIİ]rnak)|(van)|(mu[sşSŞ])|(bitlis)|(hakkari)|(adana)|(osmaniye)|(hatay)|(kahramanmara[sşSŞ])|(mara[SŞsş])|(antep))`
-	citRegex *regexp.Regexp
-	regexErr error
-)
-
-func extractCityName(s []byte) []byte {
-	return citRegex.Find(s)
-}
-
 func main() {
-	citRegex, regexErr = regexp.Compile(pattern)
-	if regexErr != nil {
-		fmt.Fprintf(os.Stderr, "city regex compile error :%s", citRegex.String())
-	}
-
 	botKey := os.Getenv("BOT_KEY")
 	if botKey == "" {
 		panic("BOT_KEY is not found")
@@ -137,9 +121,15 @@ func main() {
 				addressResponse = &AddressDetail{}
 			}
 
+			city := UNKNOWN
 			if addressResponse.City == "" {
-				cityName := extractCityName([]byte(update.ChannelPost.Text))
-				addressResponse.City = string(cityName)
+				city = string(ExtractCity(update.ChannelPost.Text))
+				addressResponse.City = city
+			}
+
+			if addressResponse.Distinct == "" {
+				district := ExtractDistrict(City(city), update.ChannelPost.Text)
+				addressResponse.Distinct = district
 			}
 		}
 	}
