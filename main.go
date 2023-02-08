@@ -10,6 +10,10 @@ import (
 	"os"
 )
 
+const (
+	backendURL = "https://api.afetharita.com/feeds/entries"
+)
+
 type FeedEntry struct {
 	IsResolved bool   `json:"is_resolved"`
 	FullText   string `json:"full_text"`
@@ -32,7 +36,7 @@ func sendDataToBackend(text string) {
 		return
 	}
 
-	req, err := http.NewRequest(http.MethodPost, "https://api.afetharita.com/feeds/entries", bytes.NewReader(serialized))
+	req, err := http.NewRequest(http.MethodPost, backendURL, bytes.NewReader(serialized))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "could not prepare request data to backend: %s", err.Error())
 		return
