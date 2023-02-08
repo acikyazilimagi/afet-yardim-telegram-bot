@@ -28,15 +28,15 @@ Projeyi lokalde çalıştırmak ya da başka bir bot_key ile configure etmek iç
 
 
 >BOT_KEY: Telegram BotFather ile oluşturup elde ettiğiniz key 
-ADDRESS_EXTRACT_API: Gelen mesajı adres alanlarına bölecek API
+BACKEND_TOKEN: Backend tarafından sağlanan API Key
 
 olmak üzere docker üzerinde çalıştırmak için kullanabileceğiniz komut: <br>
 
 ```
-docker run -it -d -e ADDRESS_EXTRACT_API=https://mertcobanov-deprem-ocr-2.hf.space/run/upload-text -e BOT_KEY= afet-telegram-bot
+docker run -it -d -e BACKEND_TOKEN= backend-token -e BOT_KEY= afet-telegram-bot
 ```
 
-**Docker komutunda ve .env.template dosyasındaki BOT_KEY ve ADDRESS_EXTRACT_API doldurmayı unutmayın.**
+**Docker komutunda ve .env.template dosyasındaki BOT_KEY ve BACKEND_TOKEN doldurmayı unutmayın.**
 
 ### Botu çağırmak
 
