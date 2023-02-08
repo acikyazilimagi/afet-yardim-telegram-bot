@@ -4,7 +4,7 @@ WORKDIR /
 
 COPY . .
 RUN go mod download
-RUN CGO_ENABLED=0 go build main.go
+RUN CGO_ENABLED=0 go build
 
 FROM gcr.io/distroless/static-debian11
 WORKDIR /bot

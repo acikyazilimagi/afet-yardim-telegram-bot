@@ -4,13 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"io"
 	"log"
 	"net/http"
 	"os"
-	"regexp"
-
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 type AddressExtractRequest struct {
@@ -30,6 +28,14 @@ type AddressDetail struct {
 	City          string `json:"city"`
 	District      string `json:"distinct"`
 	Tel           string `json:"tel"`
+}
+
+type BackendEntryFormat struct {
+	FullText        string `json:"full_text"`
+	IsResolved      bool   `json:"is_resolved"`
+	Channel         string `json:"channel"`
+	ExtraParameters string `json:"extra_parameters"`
+	Timestamp       string `json:"extra_parameters"`
 }
 
 type BackendAddressFormat struct {
@@ -92,16 +98,6 @@ func sendExtractAddressResponse(text string) *AddressDetail {
 	}
 
 	return &addressDetail
-}
-
-var (
-	pattern  = `(?i)((gaz[ıiİI]antep)|(malatya)|(batman)|(b[ıiIİ]ng[oöOÖ]l)|(elaz[Iİıi][gğ])|(kilis)|(diyarbak[ıiIİ]r)|(mardin)|(siirt)|([SsŞş][ıiIİ]rnak)|(van)|(mu[sşSŞ])|(bitlis)|(hakkari)|(adana)|(osmaniye)|(hatay)|(kahramanmara[sşSŞ])|(mara[SŞsş])|(antep))`
-	citRegex *regexp.Regexp
-	regexErr error
-)
-
-func extractCityName(s []byte) []byte {
-	return citRegex.Find(s)
 }
 
 func sendDataToBackend() {
