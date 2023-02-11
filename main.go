@@ -94,7 +94,7 @@ func main() {
 	for update := range updates {
 		if update.Message != nil {
 			log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-			go sendDataToBackend(update.Message)
+			sendDataToBackend(update.Message)
 		}
 	}
 }
